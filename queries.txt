@@ -1,0 +1,119 @@
+--2.1.2
+--select * from sellers;
+--select limit, price, description, code, manufacturer from products;
+--2.1.3
+--select full_name, age from sellers;
+--2.1.2
+--select * from sellers;
+--select limit, price, description, code, manufacturer from products;
+--2.1.3
+--select full_name, age from sellers;
+--2.1.4
+--select description as "TOBAP", price as "Цена Y.E.", 30*price as "Цена руб." from products;
+--2.1.5
+--select city, region, plan-result as "Расхождения в плане" from offices where plan is not null and result is not null;
+--2.1.6
+--select result * 1.03 as "Увеличенный план", full_name, position from sellers;
+--2.1.7
+--select MANUFACTURER || ', ' || code || ', ' || description || ', ' || price || ', ' || LIMIT as "Таблица товары" from products;
+--2.2.1        
+--select row_number() over(order by full_name) as "Position", full_name, position, employment_date from sellers; 
+--2.2.2
+--select 15.25/10.2 * 100 - 100 from dual;
+--2.2.3
+--select distinct code from products;
+--3.1.1
+--select * from sellers s where s.result > 20000;
+--3.1.2
+--select * from offices where plan * 0.8 > result;
+--3.1.3
+--2
+--select full_name, plan, result from sellers where plan > result;
+--7
+--select full_name, plan, result from sellers where plan < result;
+--0
+--select full_name, plan, result from sellers where plan = result;
+--11
+--select count(*) from sellers;
+-- все null проклятый виноват
+--3.1.4
+--select * from orders where TO_DATE(ORDER_DATE) > TO_DATE('01.10.2011') and TO_DATE(ORDER_DATE) < TO_DATE('01.01.2012');
+--3.1.5
+--select * from sellers where result < plan * 0.8 or result > plan * 1.2;
+--3.1.6
+--select * from sellers s inner join offices o on s.office_code = o.code where o.city = 'Сарапул' or o.city = 'Глазов';
+--select * from sellers s inner join offices o on s.office_code = o.code where o.city != 'Сарапул' and  o.city != 'Глазов';
+--3.1.7
+--да, смотри выше
+--3.1.8
+--select * from products where description like '%Комплект%';
+--3.1.9
+--select * from sellers where full_name like '%ич';
+--3.1.10
+--select * from sellers where office_code is not null;
+--select * from sellers where plan is not null;
+--3.1.11
+--select * from sellers s inner join offices o on s.office_code = o.code where o.city = 'Воткинск' or o.city = 'Сарапул' and s.plan > s.result;
+--3.1.12
+--select * from sellers where FULL_NAME like  '% Иван %' or FULL_NAME like '% Сергей %';
+--3.2.1
+--select * from offices order by (plan-result);
+--3.2.2
+--select * from Products order by CODE, DESCRIPTION;
+--3.2.3
+--select * from (select * from sellers order by full_name) where ROWNUM <= 5;
+--4.1.1
+--делал в прошлом году 
+--4.1.2
+--select s.full_name, (s.result - s.plan) * 0.07 as "Премия" from sellers s inner join offices o on s.office_code = o.code where s.plan < s.result order by o.code;
+--4.1.3
+
+--7.1.1
+--если все возможные
+--select s.full_name, o.CITY from sellers s cross join offices o;
+--есть офис
+--select s.full_name, o.city from sellers s inner join offices o on s.office_code = o.code;
+--нет офиса
+--select s.full_name, o.city from sellers s left outer join offices o on s.office_code = o.code;
+--7.1.2
+--select * from PRODUCTS p inner join orders o on p.MANUFACTURER = o.PRODUCT_MANUFACTURER order by o.PRODUCT_MANUFACTURER, p.MANUFACTURER;
+--7.1.3
+--select sum(o.total_sum) from orders o inner join PRODUCTS p on p.MANUFACTURER = o.PRODUCT_MANUFACTURER where p.MANUFACTURER = 'ZSM';
+--раскладка по продавцам
+--select sum(o.total_sum) from orders o inner join PRODUCTS p on p.MANUFACTURER = o.PRODUCT_MANUFACTURER where p.MANUFACTURER = 'ZSM' group by o.SELLER_ID;
+--7.1.4
+--select * from clients c join sellers s on c.seller_id = s.ID where s.full_name = 'Вахрушев Сергей Степанович';
+--7.1.5
+--select s.full_name,  s1.full_name from sellers s inner join sellers s1 on s.seller_id = s1.id;
+--конечно хардкод, но вроде работает
+--select distinct s.full_name, s.position, s1.full_name, s1.position ,s2.full_name, s2.position from sellers s inner join  sellers s1 on s.seller_id = s1.id inner join sellers s2 on (s1.seller_id = s2.id OR s.seller_id = s2.id) 
+--where s.position != 'Менеджер' and s1.position != 'Генеральный менеджер' and s2.position != 'Менеджер';
+--7.1.6
+--select sum(s.result) from sellers s inner join sellers s1 on s.seller_id = s1.id where s1.full_name = 'Петров Сидор Сидорович';
+--7.1.7
+--select sum(ord.total_sum) from offices o join sellers s on s.office_code = o.code join orders ord on ord.SELLER_ID = s.id group by o.city;
+--7.1.8
+--select * from orders o join sellers s on o.seller_id = s.id join products p on o.PRODUCT_CODE = p.CODE where o.TOTAL_SUM > 10000;
+--7.1.9
+--c inner join не работает
+--select s1.full_name, s1.EMPLOYMENT_DATE from sellers s, sellers s1 where s.full_name like('%Михаил Иванович%') and s1.EMPLOYMENT_DATE > s.EMPLOYMENT_DATE;
+--7.1.10
+-- загуглено, вообще хз что тут происходит 
+--select * from ( select trunc(sysdate, 'mm') + level - 1 dts , 
+--to_number(to_char( trunc(sysdate, 'mm') + level - 1, 'D')) dy, 
+--    decode(to_char( trunc (sysdate, 'mm') + level - 1, 'DY'), 'SUN', 
+--    to_char(trunc(sysdate, 'mm') + level -1 , 'IW') + 1, 
+--    to_char(trunc(sysdate, 'mm') + level -1, 'IW')) x from dual
+--    connect by level <= last_day(sysdate) - trunc(sysdate, 'mm') + 1 )
+--    pivot ( max(dts) for dy in (1 as sun, 2 as mon, 3 as tue, 4 as wed, 5 as thur, 
+--    6 as fri, 7 as sat) )
+--    order by x;
+--7.1.11 TODO
+--7.2.1
+--select s.full_name from sellers s inner join offices o on o.seller_id = s.id where o.city = 'Ижевск';
+--7.2.2
+--select p.manufacturer from products p inner join orders o on p.code = o.product_code inner join clients c on c.id = o.client_id where c.name='ООО "Памира"';
+--7.2.3
+--select * from sellers s where s.seller_id = (select s.seller_id from SELLERS s where s.full_name like '%Зайченко%') and s.full_name not like '%Зайченко%';
+--7.2.4
+--select tp.name from (select c.name, sum(o.total_sum) as sm from clients c inner join orders o on o.client_id = c.id group by c.name) tp order by tp.sm DESC fetch next 1 rows only;
