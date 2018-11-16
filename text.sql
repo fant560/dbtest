@@ -181,11 +181,6 @@ create table if not exists xmld_signers(
   row_update_time timestamp with time zone
 );
 
-drop trigger if exists add_insertion_time on xmld_signers;
-create trigger add_insertion_time
-  after insert on xmld_signers
-    for each row execute procedure insert_creation_time();
-
 drop trigger if exists add_updating_time on xmld_signers;
 create trigger add_updating_time
   after update on xmld_signers
